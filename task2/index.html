@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: bisque;
+        }
+        #time {
+            font-size: 4em;
+            margin: 20px;
+            color: black;
+            font-weight: bolder;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 12px;
+            background-color: tomato;
+            color: white;
+            border: 1px solid tomato;
+        }
+        #laps {
+            margin-top: 20px;
+        }
+        #laps li{
+            list-style-type: none;
+        }
+        .heading{
+            font-size: 92px;
+            color: tomato;
+            font-weight: bolder;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="heading">Stopwatch</h1>
+    <div id="time">00:00:00</div>
+    <button onclick="startStopwatch()">Start</button>
+    <button onclick="pauseStopwatch()">Pause</button>
+    <button onclick="resetStopwatch()">Reset</button>
+    <button onclick="lapTime()">Lap</button>
+    <ul id="laps"></ul>
+    
+    <script>
+        let timer;
+        let seconds = 0, minutes = 0, hours = 0;
+        let running = false;
+        
+        function updateTime() {
+            seconds++;
+            if (seconds == 60) {
+                seconds = 0;
+                minutes++;
+                if (minutes == 60) {
+                    minutes = 0;
+                    hours++;
+                }
+            }
+            document.getElementById("time").innerText = 
+                `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+        
+        function startStopwatch() {
+            if (!running) {
+                timer = setInterval(updateTime, 1000);
+                running = true;
+            }
+        }
+        
+        function pauseStopwatch() {
+            clearInterval(timer);
+            running = false;
+        }
+        
+        function resetStopwatch() {
+            clearInterval(timer);
+            running = false;
+            seconds = 0;
+            minutes = 0;
+            hours = 0;
+            document.getElementById("time").innerText = "00:00:00";
+            document.getElementById("laps").innerHTML = "";
+        }
+        
+        function lapTime() {
+            let lapItem = document.createElement("li");
+            lapItem.innerText = document.getElementById("time").innerText;
+            document.getElementById("laps").appendChild(lapItem);
+        }
+    </script>
+</body>
+</html>
